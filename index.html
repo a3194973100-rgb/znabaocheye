@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周宁阿宝车业 | 20年老店 豪爵/东威/金箭/金鹏</title>
+    <style>
+        /* --- 核心变量 --- */
+        :root {
+            --brand-red: #e74c3c;
+            --brand-dark: #2c3e50;
+            --brand-gold: #f39c12;
+            --wechat-green: #07c160;
+            --text-main: #333;
+            --bg-gray: #f8f9fa;
+        }
+
+        /* --- 基础重置 & 平滑滚动 --- */
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif; 
+            color: var(--text-main); 
+            background: #fff; 
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { width: 100%; display: block; object-fit: cover; }
+
+        /* --- 动画类 --- */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- 导航栏 --- */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: rgba(255,255,255,0.98);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            z-index: 1000;
+            padding: 12px 0;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { 
+            font-size: 1.6rem; 
+            font-weight: 900; 
+            color: var(--brand-dark); 
+            letter-spacing: -1px;
+        }
+        .logo span { color: var(--brand-red); }
+        
+        /* 电话样式修复：确保手机端也能看到号码 */
+        .nav-tel {
+            font-weight: 700;
+            color: var(--brand-dark);
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        .wechat-tag {
+            background: var(--wechat-green);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+
+        /* --- 英雄区 --- */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 15px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: popUp 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            opacity: 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-tag {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-weight: 600;
+        }
+
+        /* --- 20年承诺板块 --- */
+        .promise-section {
+            background: var(--brand-dark);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .promise-badge {
+            display: inline-block;
+            background: var(--brand-gold);
+            color: var(--brand-dark);
+            font-weight: 900;
+            padding: 8px 20px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+        }
+        .promise-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            font-weight: 500;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* --- 品牌展示 --- */
+        .brands-section {
+            padding: 80px 20px;
+            background: var(--bg-gray);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 50px;
+            color: var(--brand-dark);
+            position: relative;
+        }
+
+        .brand-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .brand-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .card-img-box {
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-img-box img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .brand-card:hover .card-img-box img { transform: scale(1.08); }
+
+        .rank-badge {
+            position: absolute;
+            top: 15px; left: 15px;
+            background: linear-gradient(135deg, #f1c40f, #e67e22);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        .card-content { padding: 25px; }
+        .card-content h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--brand-dark);
+        }
+        .arrow-icon { font-size: 1.2rem; color: #ddd; transition: 0.4s; }
+        .brand-card:hover .arrow-icon { color: var(--brand-red); transform: translateX(8px); }
+        .card-desc { font-size: 1rem; color: #666; margin-bottom: 20px; line-height: 1.5; }
+        .card-footer {
+            border-top: 1px solid #f0f0f0;
+            padding-top: 15px;
+            font-size: 0.9rem;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+
+        /* --- 弹窗样式 --- */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .modal.active { display: flex; opacity: 1; }
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 750px; /* 加宽弹窗 */
+            border-radius: 16px;
+            padding: 35px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal.active .modal-box { transform: scale(1); }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px; right: 25px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #aaa;
+            line-height: 1;
+        }
+        .close-btn:hover { color: var(--brand-red); }
+
+        .modal-content h2 { color: var(--brand-dark); border-bottom: 3px solid #eee; padding-bottom: 15px; margin-bottom: 25px; font-weight: 900; font-size: 1.8rem;}
+        .modal-content p { margin-bottom: 18px; text-align: justify; font-size: 1.1rem; color: #555; }
+        .modal-content ul { list-style: none; margin-bottom: 20px; }
+        .modal-content li { margin-bottom: 12px; color: #444; font-size: 1.05rem; display: flex; align-items: flex-start; }
+        .modal-content li::before { content: '👉'; margin-right: 10px; }
+        .modal-content .highlight-box {
+            background: #fff5f5;
+            padding: 20px;
+            border-left: 5px solid var(--brand-red);
+            margin: 25px 0;
+            font-weight: bold;
+            color: #c0392b;
+            font-size: 1.15rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* --- 联系板块 --- */
+        .contact-section { background: #1a1a1a; color: #fff; padding: 70px 20px; }
+        .contact-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 50px; }
+        .contact-left, .contact-right { flex: 1; min-width: 320px; }
+        .contact-row { margin-bottom: 25px; display: flex; align-items: flex-start; font-size: 1.15rem; }
+        .contact-row span.icon { margin-right: 18px; font-size: 1.6rem; color: var(--brand-red); }
+        
+        .map-placeholder {
+            width: 100%; height: 300px; background: #333; border-radius: 12px;
+            border: 2px solid #444; position: relative;
+            background-image: url('https://api.map.baidu.com/staticimage/v2?ak=E4805d16520de693a3fe707cdc962045&center=119.338,27.116&width=600&height=350&zoom=17&markers=119.338,27.116&markerStyles=l,A,0xff0000');
+            background-size: cover; background-position: center;
+        }
+        .map-btn {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--brand-red); color: white; padding: 10px 25px; border-radius: 50px;
+            font-size: 1rem; font-weight: bold; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        footer {
+            background: #000; color: #666; text-align: center; padding: 25px 0; font-size: 0.9rem;
+            border-top: 1px solid #333;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-tel { font-size: 0.9rem; } /* 手机上字体稍微调小一点，防止换行 */
+        }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-inner">
+            <div class="logo">阿宝<span>车业</span></div>
+            <a href="tel:13860378061" class="nav-tel">
+                138-6037-8061 <span class="wechat-tag">微信同号</span>
+            </a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>周宁阿宝车业</h1>
+            <p>20年金牌老店 · 专注豪爵/东威/金箭/金鹏</p>
+            <div class="hero-tags">
+                <span class="hero-tag">豪爵铃木精品店</span>
+                <span class="hero-tag">东威篷车专卖</span>
+                <span class="hero-tag">金箭电动车</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="promise-section fade-up">
+        <span class="promise-badge">🏆 20年信誉保障</span>
+        <div class="promise-text">
+            我们不仅仅是卖车，更是您值得信赖的邻居。<br>
+            从选车、上牌到售后维修，阿宝车业为您提供一站式服务。<br>
+            <strong>正品行货 · 假一赔十 · 诚信经营</strong>
+        </div>
+    </section>
+
+    <section class="brands-section">
+        <h2 class="section-title fade-up">四大王牌 · 现车充足</h2>
+        
+        <div class="brand-grid">
+            <div class="brand-card fade-up" onclick="showDetails('haojue')">
+                <div class="rank-badge">🏆 行业第一</div>
+                <div class="card-img-box">
+                    <img src="https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="豪爵摩托">
+                </div>
+                <div class="card-content">
+                    <h3>豪爵摩托 <span class="arrow-icon">→</span></h3>
+                    <p class="card-desc"><strong>豪爵铃木精品店。</strong> 125cc/150cc/300cc全系车型均可预订。行业霸主，品质之选。</p>
+                    <div class="card-footer">点击查看热门车系列表</div>
+                </div>
+            </div>
+
+            <div class="brand-card fade-up" onclick="showDetails('dongwei')" style="transition-delay: 0.1s;">
+                <div class="rank-badge">🥇 塑件小微车第一</div>
+                <div class="card-img-box">
+                    <img src="https://images.unsplash.com/photo-1566008885218-90abf9200ddb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="东威篷车">
+                </div>
+                <div class="card-content">
+                    <h3>东威三轮篷车 <span class="arrow-icon">→</span></h3>
+                    <p class="card-desc"><strong>东威精品专卖店。</strong> 芒果/冠运/M1等款式齐全。全封闭设计，风雨无阻，安全舒适。</p>
+                    <div class="card-footer">点击查看各款车型介绍</div>
+                </div>
+            </div>
+
+            <div class="brand-card fade-up" onclick="showDetails('jinjian')" style="transition-delay: 0.2s;">
+                <div class="rank-badge">⚡ 动力之王</div>
+                <div class="card-img-box">
+                    <img src="https://images.unsplash.com/photo-1525979208035-728b693994e6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="金箭电动车">
+                </div>
+                <div class="card-content">
+                    <h3>金箭电动车 <span class="arrow-icon">→</span></h3>
+                    <p class="card-desc">主打“跑得更远的电动车”。动力强劲，爬坡不费力，高性价比首选品牌。</p>
+                    <div class="card-footer">点击了解超长续航技术</div>
+                </div>
+            </div>
+
+            <div class="brand-card fade-up" onclick="showDetails('jinpeng')" style="transition-delay: 0.3s;">
+                <div class="rank-badge">🌍 销量世界第一</div>
+                <div class="card-img-box">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="金鹏三轮">
+                </div>
+                <div class="card-content">
+                    <h3>金鹏三轮车 <span class="arrow-icon">→</span></h3>
+                    <p class="card-desc">电动三轮车吉尼斯世界纪录保持者。拉货王、客运休闲，皮实耐造，动力十足。</p>
+                    <div class="card-footer">点击查看载重车型</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section fade-up">
+        <div class="contact-inner">
+            <div class="contact-left">
+                <h2 style="margin-bottom: 30px; font-size: 2rem;">联系我们</h2>
+                <div class="contact-row">
+                    <span class="icon">📍</span> 
+                    <div>福建省宁德市周宁县兴业街桥头阿宝车业</div>
+                </div>
+                <div class="contact-row">
+                    <span class="icon">📞</span> 
+                    <div>
+                        <a href="tel:13860378061" style="font-size: 1.3rem; font-weight: bold; color: white;">138-6037-8061</a>
+                        <span class="wechat-tag">微信同号</span>
+                    </div>
+                </div>
+                <div class="contact-row">
+                    <span class="icon">☎️</span> 
+                    <div><a href="tel:0593563058">0593-563058</a></div>
+                </div>
+                <div style="margin-top:30px; color:#888; font-size:1rem; border-top: 1px solid #333; padding-top: 20px;">
+                    🔥 营业时间：早 8:00 - 晚 9:00 (节假日不休)
+                </div>
+            </div>
+            <div class="contact-right">
+                <div class="map-placeholder">
+                    <a href="https://www.amap.com/search?query=周宁县兴业街" target="_blank" class="map-btn">🚀 一键导航到店</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        Copyright © 2026 周宁阿宝车业. All Rights Reserved.
+    </footer>
+
+    <div id="infoModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModalDirect()">×</span>
+            <div id="modalContent" class="modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const contentData = {
+            'haojue': {
+                title: '豪爵摩托 (Haojue) - 豪爵铃木精品店',
+                html: `
+                    <p><strong>【阿宝车业 · 豪爵铃木认证精品店】</strong></p>
+                    <p>我们是周宁地区专业的豪爵摩托销售服务商。无论您是需要日常代步的125cc踏板，还是追求驾驶乐趣的300cc大排量机车，我们应有尽有。所有车型均支持预订，原厂正品，享受全国联保。</p>
+                    <div class="highlight-box">🌟 行业第一品牌：不生锈、不坏件、保值率高！</div>
+                    
+                    <p><strong>【热门在售车型】</strong></p>
+                    <ul>
+                        <li>🏍️ <strong>UHR150 (高端水冷)：</strong> 缺货王！配置博世双通道ABS，静音脉冲启动，自动启停，舒适度天花板。</li>
+                        <li>🏍️ <strong>AFR125 (城市爆款)：</strong> 宽敞的脚踏空间，CBS联动刹车，超亮LED大灯，外卖通勤神器。</li>
+                        <li>🏍️ <strong>TR300 (巡航太子)：</strong> 霸气外观，坐姿舒适，适合长途摩旅，质量极其稳定。</li>
+                        <li>🏍️ <strong>GZS150 / DN150：</strong> 经典太子车升级版，省油耐用，也是很多新手的入门首选。</li>
+                        <li>🏍️ <strong>DL250 (探险拉力)：</strong> 摩旅神车，三箱配置，带您去往诗和远方。</li>
+                    </ul>
+                    <p><em>* 店内更多车型（USR, Eagle, DK系列）欢迎到店品鉴试驾！</em></p>
+                `
+            },
+            'dongwei': {
+                title: '东威三轮篷车 - 塑件小微车专门精品店',
+                html: `
+                    <p><strong>【全国销量第一 · 塑件小微车专家】</strong></p>
+                    <p>东威不仅仅是三轮车，更是按照汽车标准打造的高端微型车。我们是东威在周宁的<strong>专门精品店</strong>，款式最新、最全。</p>
+                    <div class="highlight-box">🏠 核心优势：像开汽车一样开三轮，风雨无阻！</div>
+                    
+                    <p><strong>【全系热门款式】</strong></p>
+                    <ul>
+                        <li>🛺 <strong>东威芒果 (Mango)：</strong> 圆润可爱，时尚造型，深受女性和接送孩子的家长喜爱。小巧灵活，停车方便。</li>
+                        <li>🛺 <strong>东威冠运：</strong> 经典造型，空间更大，底盘更扎实，适合全家出行。</li>
+                        <li>🛺 <strong>东威 M1：</strong> 科技感外观，配置豪华，LED大灯，驾乘体验一流。</li>
+                        <li>🛺 <strong>东威 A7 / Q5：</strong> 更多高端系列，配备冷暖空调、倒车影像、豪华座椅。</li>
+                    </ul>
+                    <p><strong>【安全承诺】</strong> 采用笼式车身结构，防撞能力强。全注塑外壳，永不生锈，即使磕碰也容易修复。</p>
+                `
+            },
+            'jinjian': {
+                title: '金箭电动车 - 动力与性价比之王',
+                html: `
+                    <p><strong>【品牌特色】</strong> 金箭电动车是近年来市场增长最快的一线品牌，以“跑得更远、动力更强”著称。在周宁的山城地形，金箭的动力优势非常明显。</p>
+                    <div class="highlight-box">⚡ 核心卖点：同样的价格比配置，同样的配置比价格！</div>
+                    <p><strong>【技术优势】</strong></p>
+                    <ul>
+                        <li>🚀 <strong>大功率电机：</strong> 爬坡不费力，起步快，载重能力强。</li>
+                        <li>🔋 <strong>黑金石墨烯电池：</strong> 支持快充，寿命更长，冬天也耐跑。</li>
+                        <li>🛡️ <strong>加粗车架：</strong> 承重能力强，外卖小哥和家庭载重都喜欢。</li>
+                    </ul>
+                `
+            },
+            'jinpeng': {
+                title: '金鹏三轮车 - 销量世界第一',
+                html: `
+                    <p><strong>【世界纪录】</strong> 金鹏（金彭）是电动三轮车行业的吉尼斯世界纪录保持者，销量遥遥领先，远销全球60多个国家。</p>
+                    <div class="highlight-box">💪 核心卖点：拉得多、跑得快、用不坏！</div>
+                    <p><strong>【产品系列】</strong></p>
+                    <ul>
+                        <li>🚛 <strong>货运王系列：</strong> 专为拉货设计，加强型钢板弹簧，电机扭矩大，拉几百斤上坡不费劲。</li>
+                        <li>🛺 <strong>休闲客运系列：</strong> 适合中老年人代步，操作简单，防侧翻设计，安全系数高。</li>
+                    </ul>
+                `
+            }
+        };
+
+        function showDetails(brand) {
+            const modal = document.getElementById('infoModal');
+            const content = document.getElementById('modalContent');
+            if (contentData[brand]) {
+                content.innerHTML = `<h2>${contentData[brand].title}</h2>${contentData[brand].html}`;
+                modal.classList.add('active');
+            }
+        }
+        function closeModal(e) { if (e.target.id === 'infoModal') closeModalDirect(); }
+        function closeModalDirect() { document.getElementById('infoModal').classList.remove('active'); }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const fadeElements = document.querySelectorAll('.fade-up');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            fadeElements.forEach(element => observer.observe(element));
+        });
+    </script>
+</body>
+</html>
